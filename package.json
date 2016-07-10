@@ -1,6 +1,6 @@
 {
   "name": "ransomaware",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "monitor the filesystem to detect ransomware activity",
   "main": "ransomAware.js",
   "bin": "ransomAware.js",
