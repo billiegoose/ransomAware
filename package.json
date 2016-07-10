@@ -1,8 +1,9 @@
 {
   "name": "ransomaware",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "monitor the filesystem to detect ransomware activity",
   "main": "ransomAware.js",
+  "bin": "ransomAware.js",
   "scripts": {
     "start": "node ransomAware.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +16,14 @@
     "lodash": "^4.13.1",
     "node-notifier": "^4.6.0",
     "opener": "^1.4.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wmhilton/ransomAware.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wmhilton/ransomAware/issues"
+  },
+  "homepage": "https://github.com/wmhilton/ransomAware#readme"
 }

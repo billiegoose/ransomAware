@@ -14,3 +14,14 @@ Most ransomware changes the filename and adds .crypt or .enc or something stupid
 So I do that, but I do one step more. ANY file extension that is 'new' and hasn't appeared in a folder before triggers an alert. So you get a lot of notifications up front, but after a learning period it learns what file types are "normal" to expect, and you'll only get alerts when something "unusual" happens.
 
 This project is a work in progress, but already is capable of detecting the kinds of ransomware that 3 of my friends have been plagued by. Currently only installable via github or npm, but hopefully I'll come up with a simpler distribution mechanism.
+
+# Installation
+```
+npm i -g ransomaware
+```
+
+# Usage
+```
+ransomaware
+```
+Alerts via node-notifier
