@@ -1,0 +1,14 @@
+pf
+db
+ldb
+leveldb
+db-journal
+localstorage-journal
+localstorage
+sqlite3
+sqlite3-journal
+tmp
+temp
+job
+dat
+bak

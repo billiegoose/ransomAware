@@ -1,0 +1,19 @@
+{
+  "name": "ransomaware",
+  "version": "1.0.0",
+  "description": "monitor the filesystem to detect ransomware activity",
+  "main": "ransomAware.js",
+  "scripts": {
+    "start": "node ransomAware.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "William Hilton <wmhilton@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ext-list": "^2.2.0",
+    "lodash": "^4.13.1",
+    "node-notifier": "^4.6.0",
+    "opener": "^1.4.1"
+  }
+}
