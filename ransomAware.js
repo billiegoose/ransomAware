@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 'use strict'
 const fs = require('fs')
 const path = require('path')
@@ -13,7 +14,7 @@ knownExtensions = knownExtensions.concat(Object.keys(require('ext-list')()))
 let graph = {}
 let training_mode = false
 try {
-  graph = JSON.parse(fs.readFileSync('graph.json', 'utf8'))
+  graph = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'graph.json'), 'utf8'))
 } catch (e) {
   training_mode = true
   setTimeout(function () { training_mode = false }, 30 * 60 * 1000)
@@ -72,7 +73,7 @@ fs.watch(root_dir, {recursive: true}, (event, filename) => {
 
 // Periodically save graph to file.
 setInterval(() => {
-  fs.writeFileSync('graph.json', JSON.stringify(graph, null, 2))
+  fs.writeFileSync(path.resolve(__dirname, 'graph.json'), JSON.stringify(graph, null, 2))
 }, 10000)
 
 // ES7 polyfill (by me, not Mozilla)
