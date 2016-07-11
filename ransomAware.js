@@ -5,10 +5,14 @@ const path = require('path')
 const _ = require('lodash')
 const notifier = require('node-notifier')
 const opener = require('opener')
+const extList = require('ext-list')
 
-const knownEvil = fs.readFileSync('knownEvil.txt', 'utf8').trim().split('\n').map((x) => x.trim())
-let knownExtensions = fs.readFileSync('knownExt.txt', 'utf8').trim().split('\n').map((x) => x.trim())
-knownExtensions = knownExtensions.concat(Object.keys(require('ext-list')()))
+// Convenience functions
+const trimtrim = (x) => x.trim().split('\n').map((x) => x.trim()).filter((x) => x !== '')
+
+// File extension lists
+const knownEvil       = trimtrim(fs.readFileSync(path.resolve(__dirname, 'knownEvil.txt'), 'utf8'))
+const knownExtensions = trimtrim(fs.readFileSync(path.resolve(__dirname, 'knownExt.txt' ), 'utf8')).concat(Object.keys(extList()))
 
 // Load learned file usage.
 let graph = {}
