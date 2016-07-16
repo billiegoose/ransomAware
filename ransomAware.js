@@ -84,7 +84,7 @@ let theGreatFileWatcher = null
 let theGreatInterval = null
 
 exports.start = function start (settings) {
-  theGreatFileWatcher = fs.watch(settings.root_dir, {recursive: true}, onFileChange)
+  theGreatFileWatcher = fs.watch(settings.watchDir, {recursive: true}, onFileChange)
   // Periodically save graph to file.
   theGreatInterval = setInterval(() => {
     fs.writeFileSync(path.resolve(__dirname, 'graph.json'), JSON.stringify(graph, null, 2))
@@ -96,6 +96,6 @@ exports.stop = function stop () {
 }
 
 if (!module.parent) {
-  exports.start({root_dir: root_dir})
-  // setTimeout(exports.stop, 5000)
+  exports.start({watchDir: root_dir})
+  // setTimeout(exports.stop, 15000)
 }
