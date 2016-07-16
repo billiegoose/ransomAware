@@ -42,9 +42,12 @@
           openDir () {
             self = this
             remote.dialog.showOpenDialog({
+              defaultPath: self.watchDir,
               properties: ['openDirectory']
             }, (dir) => {
-              self.watchDir = dir
+              if (dir) {
+                self.watchDir = dir
+              }
             })
           },
           apply () {

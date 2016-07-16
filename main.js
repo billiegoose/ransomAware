@@ -1,8 +1,14 @@
 'use strict'
 const electron = require('electron')
-const {app, BrowserWindow} = electron
 
-app.on('ready', () => {
-  let win = new BrowserWindow()
-  win.loadURL(`file://${__dirname}/pages/settings.html`)
+let tray = null
+let settingsWindow = null
+
+electron.app.on('ready', () => {
+  tray = new electron.Tray('./folder-saved-search-32px.png')
+  tray.setToolTip('Ransom Aware')
+  tray.on('double-click', () => {
+    settingsWindow = new electron.BrowserWindow()
+    settingsWindow.loadURL(`file://${__dirname}/pages/settings.html`)
+  })
 })
