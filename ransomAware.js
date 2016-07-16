@@ -1,12 +1,17 @@
 #! /usr/bin/env node
 'use strict'
+// ES7 polyfill (by me, not Mozilla)
+if (!Array.prototype.includes) {
+  Array.prototype.includes = function (value) {
+    return this.indexOf(value) > -1
+  }
+}
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
 const notifier = require('node-notifier')
 const opener = require('opener')
 const extList = require('ext-list')
-require('es7-array.prototype.includes')
 
 // Convenience functions
 const trimtrim = (x) => x.trim().split('\n').map((x) => x.trim()).filter((x) => x !== '')
@@ -29,8 +34,7 @@ notifier.on('click', (notifierObject, options) => opener(options.message))
 
 const root_dir = (process.platform === 'win32') ? 'C:\\' : '/'
 
-// Watch the root drive (typically C: but whatever drive this file is in technically.
-fs.watch(root_dir, {recursive: true}, (event, filename) => {
+function onFileChange (event, filename) {
   // Regardless of the type of event, this callback gets fired,
   // so we might as well look at the filename and ignore the event name.
   // And chokidar was right, it does double-fire quite a lot. But chokidar
@@ -74,9 +78,24 @@ fs.watch(root_dir, {recursive: true}, (event, filename) => {
       _.set(graph, propPath, count + 1)
     }
   }
-})
+}
 
-// Periodically save graph to file.
-setInterval(() => {
-  fs.writeFileSync(path.resolve(__dirname, 'graph.json'), JSON.stringify(graph, null, 2))
-}, 10000)
+let theGreatFileWatcher = null
+let theGreatInterval = null
+
+exports.start = function start (settings) {
+  theGreatFileWatcher = fs.watch(settings.root_dir, {recursive: true}, onFileChange)
+  // Periodically save graph to file.
+  theGreatInterval = setInterval(() => {
+    fs.writeFileSync(path.resolve(__dirname, 'graph.json'), JSON.stringify(graph, null, 2))
+  }, 10000)
+}
+
+exports.stop = function stop () {
+  global.clearInterval(theGreatInterval); theGreatFileWatcher.close()
+}
+
+if (!module.parent) {
+  exports.start({root_dir: root_dir})
+  // setTimeout(exports.stop, 5000)
+}
