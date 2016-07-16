@@ -12,6 +12,7 @@
   "author": "William Hilton <wmhilton@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "es7-array.prototype.includes": "^1.0.1",
     "ext-list": "^2.2.0",
     "lodash": "^4.13.1",
     "node-notifier": "^4.6.0",

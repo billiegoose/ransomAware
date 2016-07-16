@@ -6,13 +6,14 @@ const _ = require('lodash')
 const notifier = require('node-notifier')
 const opener = require('opener')
 const extList = require('ext-list')
+require('es7-array.prototype.includes')
 
 // Convenience functions
 const trimtrim = (x) => x.trim().split('\n').map((x) => x.trim()).filter((x) => x !== '')
 
 // File extension lists
-const knownEvil       = trimtrim(fs.readFileSync(path.resolve(__dirname, 'knownEvil.txt'), 'utf8'))
-const knownExtensions = trimtrim(fs.readFileSync(path.resolve(__dirname, 'knownExt.txt' ), 'utf8')).concat(Object.keys(extList()))
+const evilExtensions = trimtrim(fs.readFileSync(path.resolve(__dirname, 'evilExtensions.txt'), 'utf8'))
+const fileExtensions = trimtrim(fs.readFileSync(path.resolve(__dirname, 'fileExtensions.txt'), 'utf8')).concat(Object.keys(extList()))
 
 // Load learned file usage.
 let graph = {}
@@ -43,7 +44,7 @@ fs.watch(root_dir, {recursive: true}, (event, filename) => {
 
       let propPath = [ext, dir]
       // Report known evil file extensions!
-      if (knownEvil.includes(ext)) {
+      if (evilExtensions.includes(ext)) {
         notifier.notify({
           title: 'Ransomware detected!',
           message: dir,
@@ -52,7 +53,7 @@ fs.watch(root_dir, {recursive: true}, (event, filename) => {
         })
         console.log('!!! !!!\t' + ext + '\t' + dir)
       // Log other file access
-      } else if (knownExtensions.includes(ext)) {
+      } else if (fileExtensions.includes(ext)) {
         console.log('-\t' + ext + '\t' + dir)
       } else {
         console.log('??\t' + ext + '\t' + dir)
@@ -79,10 +80,3 @@ fs.watch(root_dir, {recursive: true}, (event, filename) => {
 setInterval(() => {
   fs.writeFileSync(path.resolve(__dirname, 'graph.json'), JSON.stringify(graph, null, 2))
 }, 10000)
-
-// ES7 polyfill (by me, not Mozilla)
-if (!Array.prototype.includes) {
-  Array.prototype.includes = function (value) {
-    return this.indexOf(value) > -1
-  }
-}
