@@ -66,7 +66,7 @@ function onFileChange (event, filename) {
       // Report unusual activity
       let count = _.get(graph, propPath, 0)
       if (count === 0) {
-        if (!training_mode) {
+        if (!training_mode && settings.notifications) {
           notifier.notify({
             title: 'New .' + ext + ' file activity',
             message: dir,
@@ -82,8 +82,18 @@ function onFileChange (event, filename) {
 
 let theGreatFileWatcher = null
 let theGreatInterval = null
+let settings = {}
+try {
+  settings = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'settings.json'), 'utf8'))
+} catch (e) {
+  // first run, no settings.json file
+  settings = {
+    watchDir: root_dir,
+    notifications: true
+  }
+}
 
-exports.start = function start (settings) {
+exports.start = function start () {
   theGreatFileWatcher = fs.watch(settings.watchDir, {recursive: true}, onFileChange)
   // Periodically save graph to file.
   theGreatInterval = setInterval(() => {
@@ -93,6 +103,16 @@ exports.start = function start (settings) {
 
 exports.stop = function stop () {
   global.clearInterval(theGreatInterval); theGreatFileWatcher.close()
+}
+
+exports.settings = function (settings_object) {
+  if (settings_object) {
+    settings = settings_object
+    fs.writeFileSync(path.resolve(__dirname, 'settings.json'), JSON.stringify(settings, null, 2))
+    return
+  } else {
+    return settings
+  }
 }
 
 if (!module.parent) {
