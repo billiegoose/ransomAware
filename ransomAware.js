@@ -93,19 +93,28 @@ try {
   }
 }
 
-exports.start = function start () {
-  theGreatFileWatcher = fs.watch(settings.watchDir, {recursive: true}, onFileChange)
-  // Periodically save graph to file.
-  theGreatInterval = setInterval(() => {
-    fs.writeFileSync(path.resolve(__dirname, 'graph.json'), JSON.stringify(graph, null, 2))
-  }, 10000)
+exports.start = () => {
+  if (!theGreatFileWatcher) {
+    theGreatFileWatcher = fs.watch(settings.watchDir, {recursive: true}, onFileChange)
+  }
+  if (!theGreatInterval) {
+    // Periodically save graph to file.
+    theGreatInterval = setInterval(() => {
+      fs.writeFileSync(path.resolve(__dirname, 'graph.json'), JSON.stringify(graph, null, 2))
+    }, 10000)
+  }
 }
 
-exports.stop = function stop () {
-  global.clearInterval(theGreatInterval); theGreatFileWatcher.close()
+exports.stop = () => {
+  if (theGreatInterval) {
+    global.clearInterval(theGreatInterval)
+  }
+  if (theGreatFileWatcher) {
+    theGreatFileWatcher.close()
+  }
 }
 
-exports.settings = function (settings_object) {
+exports.settings = (settings_object) => {
   if (settings_object) {
     settings = settings_object
     fs.writeFileSync(path.resolve(__dirname, 'settings.json'), JSON.stringify(settings, null, 2))
@@ -114,6 +123,8 @@ exports.settings = function (settings_object) {
     return settings
   }
 }
+
+exports.running = () => theGreatFileWatcher !== null
 
 if (!module.parent) {
   exports.start({watchDir: root_dir})
