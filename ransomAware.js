@@ -12,6 +12,7 @@ const _ = require('lodash')
 const notifier = require('node-notifier')
 const opener = require('opener')
 const extList = require('ext-list')
+const settings = require('./settings')
 
 // Convenience functions
 const trimtrim = (x) => x.trim().split('\n').map((x) => x.trim()).filter((x) => x !== '')
@@ -31,8 +32,6 @@ try {
 }
 
 notifier.on('click', (notifierObject, options) => opener(options.message))
-
-const root_dir = (process.platform === 'win32') ? 'C:\\' : '/'
 
 function onFileChange (event, filename) {
   // Regardless of the type of event, this callback gets fired,
@@ -66,7 +65,7 @@ function onFileChange (event, filename) {
       // Report unusual activity
       let count = _.get(graph, propPath, 0)
       if (count === 0) {
-        if (!training_mode && settings.notifications) {
+        if (!training_mode && settings.get('notifications')) {
           notifier.notify({
             title: 'New .' + ext + ' file activity',
             message: dir,
@@ -82,20 +81,10 @@ function onFileChange (event, filename) {
 
 let theGreatFileWatcher = null
 let theGreatInterval = null
-let settings = {}
-try {
-  settings = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'settings.json'), 'utf8'))
-} catch (e) {
-  // first run, no settings.json file
-  settings = {
-    watchDir: root_dir,
-    notifications: true
-  }
-}
 
 exports.start = () => {
   if (!theGreatFileWatcher) {
-    theGreatFileWatcher = fs.watch(settings.watchDir, {recursive: true}, onFileChange)
+    theGreatFileWatcher = fs.watch(settings.get('watchDir'), {recursive: true}, onFileChange)
   }
   if (!theGreatInterval) {
     // Periodically save graph to file.
@@ -114,19 +103,9 @@ exports.stop = () => {
   }
 }
 
-exports.settings = (settings_object) => {
-  if (settings_object) {
-    settings = settings_object
-    fs.writeFileSync(path.resolve(__dirname, 'settings.json'), JSON.stringify(settings, null, 2))
-    return
-  } else {
-    return settings
-  }
-}
-
 exports.running = () => theGreatFileWatcher !== null
 
 if (!module.parent) {
-  exports.start({watchDir: root_dir})
+  exports.start({watchDir: settings.get('watchDir')})
   // setTimeout(exports.stop, 15000)
 }

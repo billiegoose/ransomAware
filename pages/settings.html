@@ -17,6 +17,8 @@
 
           <label>Notifications enabled <input type="checkbox" v-model="notifications"></label>
 
+          <label>Startup on Windows login<input type="checkbox" v-model="startOnLogin"></label>
+
           <button type="submit">Apply</button>
         </form>
       </article>
@@ -25,17 +27,16 @@
     <script>
       // Our connection back to the mainland, har har.
       const remote = require('electron').remote
-      console.log(remote)
-      const ransomAware = remote.require('./ransomAware.js')
-      console.log(ransomAware)
+      const settings = remote.require('./settings')
 
       let Vue = require('vue')
-      console.log(Vue)
+
       let app = new Vue({
         el: '#app',
         data: {
           watchDir: 'C:\\',
-          notifications: true
+          notifications: true,
+          startOnLogin: false
         },
         methods: {
           openDir () {
@@ -45,22 +46,18 @@
               properties: ['openDirectory']
             }, (dir) => {
               if (dir) {
-                self.watchDir = dir
+                self.watchDir = dir[0]
               }
             })
           },
           apply () {
-            ransomAware.settings(this.$data)
-          },
-          start () {
-            ransomAware.start()
-          },
-          stop () {
-            ransomAware.stop()
+            settings.set('watchDir', this.watchDir)
+            settings.set('notifications', this.notifications)
+            settings.set('startOnLogin', this.startOnLogin)
           }
         },
         ready () {
-          Object.assign(this.$data, ransomAware.settings())
+          Object.assign(this.$data, settings.get())
         }
       })
     </script>

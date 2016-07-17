@@ -1,6 +1,10 @@
 'use strict'
+const os = require('os')
+const path = require('path')
 const electron = require('electron')
+const startup = require('user-startup')
 const ransomAware = require('./ransomAware')
+const settings = require('./settings')
 
 let tray = null
 let settingsWindow = null
@@ -17,8 +21,16 @@ function showSettings () {
   }
 }
 
+settings.watch('startOnLogin', () => {
+  if (settings.get('startOnLogin')) {
+    startup.add('ransomAware', process.execPath, [__filename], path.join(os.tmpdir(), 'ransomAware.log'))
+  } else {
+    startup.remove('ransomAware')
+  }
+})
+
 electron.app.on('ready', () => {
-  tray = new electron.Tray('./folder-saved-search-32px.png')
+  tray = new electron.Tray(`${__dirname}/folder-saved-search-32px.png`)
   tray.setToolTip('Ransom Aware')
   tray.on('double-click', showSettings)
   ransomAware.start()
