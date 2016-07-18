@@ -33,6 +33,8 @@ try {
 
 notifier.on('click', (notifierObject, options) => opener(options.message))
 
+let drive = 'C:\\'
+
 function onFileChange (event, filename) {
   // Regardless of the type of event, this callback gets fired,
   // so we might as well look at the filename and ignore the event name.
@@ -43,7 +45,7 @@ function onFileChange (event, filename) {
     // Don't worry about directories or files without a file extension
     if (f.ext) {
       let ext = f.ext.toLowerCase().replace('.', '')
-      let dir = path.resolve('C:\\', f.dir) // Normalization is a bitch
+      let dir = path.resolve(drive, f.dir) // Normalization is a bitch
 
       let propPath = [ext, dir]
       // Report known evil file extensions!
@@ -84,6 +86,7 @@ let theGreatInterval = null
 
 exports.start = () => {
   if (!theGreatFileWatcher) {
+    drive = path.parse(settings.get('watchDir')).root
     theGreatFileWatcher = fs.watch(settings.get('watchDir'), {recursive: true}, onFileChange)
   }
   if (!theGreatInterval) {

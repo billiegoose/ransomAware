@@ -8,7 +8,7 @@
   <body>
     <div id="app">
       <article>
-        <form v-on:submit.prevent="apply">
+        <form>
           <fieldset>
             <label for="watchDir">Directory to watch:</label>
             <button type="button" @click="openDir">Select Directory</button>
@@ -18,8 +18,6 @@
           <label>Notifications enabled <input type="checkbox" v-model="notifications"></label>
 
           <label>Startup on Windows login<input type="checkbox" v-model="startOnLogin"></label>
-
-          <button type="submit">Apply</button>
         </form>
       </article>
     </div>
@@ -34,9 +32,9 @@
       let app = new Vue({
         el: '#app',
         data: {
-          watchDir: 'C:\\',
-          notifications: true,
-          startOnLogin: false
+          watchDir: void(0),
+          notifications: void(0),
+          startOnLogin: void(0)
         },
         methods: {
           openDir () {
@@ -57,7 +55,15 @@
           }
         },
         ready () {
+          let self = this
           Object.assign(this.$data, settings.get())
+          // Listen to changes to Vue and update Settings
+          for (let key in self.$data) {
+            self.$watch(key, (val, oldVal) => {
+              console.log(oldVal, val)
+              settings.set(key, val)
+            })
+          }
         }
       })
     </script>
