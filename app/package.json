@@ -1,7 +1,7 @@
 {
   "name": "ransomaware",
   "productName": "Ransom Aware",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Detect ransomware before it does damage.",
   "main": "app.js",
   "author": "William Hilton <wmhilton@gmail.com>",
