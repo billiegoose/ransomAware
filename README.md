@@ -22,6 +22,11 @@ npm i -g ransomaware
 
 # Usage
 ```
-ransomaware
+npm run electron
 ```
+
+It has a GUI now and lives in the system tray. It can be started / paused from the tray menu.
+Double-click or use the tray menu to open the Settings window. Settings are applied immediately as you change them,
+although changing the watched directory seems to not always work and sometimes requires a restart.
+
 Alerts via node-notifier
