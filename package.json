@@ -2,11 +2,10 @@
   "name": "ransomaware",
   "version": "0.0.4",
   "description": "monitor the filesystem to detect ransomware activity",
-  "main": "ransomAware.js",
-  "bin": "ransomAware.js",
+  "main": "app/app.js",
+  "bin": "app/ransomAware.js",
   "scripts": {
-    "electron": "electron main.js",
-    "start": "node ransomAware.js",
+    "start": "electron app/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,6 +15,7 @@
     "electron-prebuilt": "^1.2.7",
     "electron-settings": "^1.1.1",
     "ext-list": "^2.2.0",
+    "fs-extra": "^0.30.0",
     "lodash": "^4.13.1",
     "node-notifier": "^4.6.0",
     "opener": "^1.4.1",

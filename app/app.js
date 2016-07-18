@@ -18,7 +18,7 @@ function showSettings () {
     // settingsWindow.toggleDevTools()
     settingsWindow.on('closed', () => settingsWindow = null)
     settingsWindow.once('ready-to-show', settingsWindow.show)
-    settingsWindow.loadURL(`file://${__dirname}/pages/settings.html`)
+    settingsWindow.loadURL(`file://${__dirname}/settings.html`)
   }
 }
 

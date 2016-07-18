@@ -12,11 +12,12 @@ function main () {
 }
 
 // imports
+const dataDir = require('./dataDir')
 const ElectronSettings = require('electron-settings')
 
 // helpers
 const _ElectronSettings_ = {
-  configDirPath: __dirname,
+  configDirPath: dataDir,
   configFileName: 'settings'
 }
 
