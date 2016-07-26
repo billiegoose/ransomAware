@@ -1,4 +1,5 @@
-# ransomAware.js
+# ransomAware [![Join the chat at https://gitter.im/wmhilton/ransomAware](https://badges.gitter.im/wmhilton/ransomAware.svg)](https://gitter.im/wmhilton/ransomAware?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Be notified the moment you get ransomware by monitoring the filesystem
 
 # Motivation
