@@ -2,6 +2,7 @@
 const {app, dialog} = require('electron')
 // https://github.com/jenslind/electron-gh-releases/blob/master/docs/2.x/api.md#usage-example
 const GhReleases = require('electron-gh-releases')
+const notifier = require('node-notifier')
 
 let options = {
   repo: 'wmhilton/ransomAware',
@@ -24,6 +25,16 @@ updater.check((err, status) => {
         updater.download()
       }
     })
+  } else if (!err && !status) {
+    notifier.notify({
+      title: 'No update',
+      message: 'You are using Ransom Aware v' + app.getVersion()
+    })
+  } else {
+    notifier.notify({
+      title: 'RansomAware updater error',
+      message: err.message
+    })
   }
 })
 
@@ -41,6 +52,3 @@ updater.on('update-downloaded', (info) => {
     }
   })
 })
-
-// Access electrons autoUpdater
-updater.autoUpdater
