@@ -19,7 +19,8 @@
     "win": {
       "iconUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Folder-saved-search.svg/240px-Folder-saved-search.svg.png",
       "remoteReleases": "https://github.com/wmhilton/ransomAware"
-    }
+    },
+    "asar": false
   },
   "keywords": [],
   "author": "William Hilton <wmhilton@gmail.com>",
