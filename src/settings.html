@@ -7,6 +7,7 @@
   </head>
   <body>
     <div id="app">
+      <h1> ransomAware <small> Version {{ version }} </small> </h1>
       <article>
         <form>
           <fieldset>
@@ -26,6 +27,7 @@
       // Our connection back to the mainland, har har.
       const remote = require('electron').remote
       const settings = remote.require('./settings')
+      const myVersion = remote.require('../package.json').version
 
       let Vue = require('vue')
 
@@ -34,7 +36,8 @@
         data: {
           watchDir: void(0),
           notifications: void(0),
-          startOnLogin: void(0)
+          startOnLogin: void(0),
+          version: myVersion
         },
         methods: {
           openDir () {

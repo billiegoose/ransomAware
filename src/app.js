@@ -1,5 +1,6 @@
 'use strict'
-require('./updater')
+const updater = require('./updater')
+updater.check()
 const os = require('os')
 const path = require('path')
 const electron = require('electron')
@@ -57,8 +58,18 @@ electron.app.on('ready', () => {
       click: ransomAware.stop
     },
     {
+      label: 'Notifications',
+      type: 'checkbox',
+      checked: settings.get('notifications'),
+      click: (menuItem, browserWindow, event) => settings.set('notifications', menuItem.checked)
+    },
+    {
       label: 'Settings',
       click: showSettings
+    },
+    {
+      label: 'Check for Updates',
+      click: updater.check
     },
     {
       role: 'quit'

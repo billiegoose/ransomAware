@@ -11,39 +11,44 @@ let options = {
 
 const updater = new GhReleases(options)
 
-// Check for updates
-// `status` returns true if there is a new update available
-updater.check((err, status) => {
-  if (!err && status) {
-    dialog.showMessageBox({
-      buttons: ['No', 'Yes'],
-      message: 'An update is available. Would you like to download this update now?'
-    }, (err, button) => {
-      if (err) console.log('err =', err)
-      if (button === 1) {
-        // Download the update
-        updater.download()
-      }
-    })
-  } else if (!err && !status) {
-    notifier.notify({
-      title: 'No update',
-      message: 'You are using Ransom Aware v' + app.getVersion()
-    })
-  } else {
-    notifier.notify({
-      title: 'RansomAware updater error',
-      message: err.message
-    })
-  }
-})
+function check () {
+  // Check for updates
+  // `status` returns true if there is a new update available
+  console.log('checking for updates...')
+  updater.check((err, status) => {
+    console.log('err =', err)
+    console.log('status =', status)
+    if (err) {
+      notifier.notify({
+        title: 'ransomAware',
+        message: err.message,
+        wait: false
+      })
+      return
+    }
+    if (status) {
+      dialog.showMessageBox({
+        title: 'ransomAware',
+        message: 'An update is available. Would you like to download this update now?',
+        buttons: ['No', 'Yes']
+      }, (err, button) => {
+        if (err) console.log('err =', err)
+        if (button === 1) {
+          // Download the update
+          updater.download()
+        }
+      })
+    }
+  })
+}
 
 // When an update has been downloaded
 updater.on('update-downloaded', (info) => {
   // Restart the app and install the update
   dialog.showMessageBox({
-    buttons: ['No', 'Yes'],
-    message: 'An update is ready to install. Would you like to restart the application to install the update now?'
+    title: 'ransomAware',
+    message: 'An update is ready to install. Would you like to restart the application to install the update now?',
+    buttons: ['No', 'Yes']
   }, (err, button) => {
     if (err) console.log('err =', err)
     if (button === 1) {
@@ -52,3 +57,7 @@ updater.on('update-downloaded', (info) => {
     }
   })
 })
+
+module.exports = {
+  check: check
+}
