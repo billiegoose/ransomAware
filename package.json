@@ -1,7 +1,7 @@
 {
   "name": "ransomaware",
   "productName": "Ransom Aware",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Detect ransomware before it does damage.",
   "main": "src/app.js",
   "bin": "src/ransomAware.js",
