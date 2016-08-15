@@ -11,7 +11,7 @@
     "postinstall": "install-app-deps",
     "pack": "build --dir",
     "dist": "build --win",
-    "prepublish": "build --win --publish onTagOrDraft"
+    "release": "build --win --publish onTagOrDraft"
   },
   "build": {
     "appId": "com.npmjs.package.ransomaware",
