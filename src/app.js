@@ -1,4 +1,5 @@
 'use strict'
+if(require('electron-squirrel-startup')) return
 const updater = require('./updater')
 updater.check()
 const os = require('os')
