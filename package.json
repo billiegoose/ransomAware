@@ -9,9 +9,9 @@
     "start": "electron src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "install-app-deps",
-    "pack": "build --dir",
+    "pack": "build --dir --x64",
     "dist": "build --win --x64",
-    "release": "build --win --publish onTagOrDraft"
+    "release": "build --win --x64 --publish onTagOrDraft"
   },
   "build": {
     "appId": "com.npmjs.package.ransomaware",
