@@ -8,6 +8,6 @@ install:
 build_script:
   - node --version
   - npm --version
-  - npm run release
+  - ps: npm run release
 
 test: off
