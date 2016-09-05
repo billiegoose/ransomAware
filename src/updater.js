@@ -31,10 +31,13 @@ function check () {
         title: 'ransomAware',
         message: 'An update is available. Would you like to download this update now?',
         buttons: ['No', 'Yes']
-      }, (err, button) => {
-        if (err) console.log('err =', err)
+      }, (button) => {
         if (button === 1) {
           // Download the update
+          notifier.notify({
+            title: 'ransomAware',
+            message: 'Downloading update...'
+          })
           updater.download()
         }
       })
@@ -49,10 +52,9 @@ updater.on('update-downloaded', (info) => {
     title: 'ransomAware',
     message: 'An update is ready to install. Would you like to restart the application to install the update now?',
     buttons: ['No', 'Yes']
-  }, (err, button) => {
-    if (err) console.log('err =', err)
+  }, (button) => {
     if (button === 1) {
-      // Download the update
+      // Install the update
       updater.install()
     }
   })
